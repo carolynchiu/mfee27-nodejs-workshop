@@ -32,36 +32,17 @@ let brushPromise = doWork("刷牙", 3000);
 // console.log(brushPromise); // pending -> 表示還不知道結果
 
 // (1)
-// brushPromise
-//   .then((data) => {
-//     // 用來接住 resolve 後的東西
-//     console.log("在 promise 裡", data);
-//     let eatPromise = doWork("吃早餐", 5000);
-//     return eatPromise;
-//   })
-//   .then((data) => {
-//     console.log("在 promise 裡", data);
-//     let writePromise = doWork("寫功課", 3000);
-//     return writePromise;
-//   })
-//   .then((data) => {
-//     console.log("在 promise 裡", data);
-//   })
-//   .catch((err) => {
-//     // 用來接住 reject
-//     console.error("在 promise 發生錯誤:", err);
-//   });
-
-// (2)更精簡的寫法 -> 見 promise2.js
-doWork("刷牙", 3000)
+brushPromise
   .then((data) => {
     // 用來接住 resolve 後的東西
     console.log("在 promise 裡", data);
-    return doWork("吃早餐", 5000);
+    let eatPromise = doWork("吃早餐", 5000);
+    return eatPromise;
   })
   .then((data) => {
     console.log("在 promise 裡", data);
-    return doWork("寫功課", 3000);
+    let writePromise = doWork("寫功課", 3000);
+    return writePromise;
   })
   .then((data) => {
     console.log("在 promise 裡", data);
@@ -70,3 +51,22 @@ doWork("刷牙", 3000)
     // 用來接住 reject
     console.error("在 promise 發生錯誤:", err);
   });
+
+// (2)更精簡的寫法 -> 見 promise2.js
+// doWork("刷牙", 3000)
+//   .then((data) => {
+//     // 用來接住 resolve 後的東西
+//     console.log("在 promise 裡", data);
+//     return doWork("吃早餐", 5000);
+//   })
+//   .then((data) => {
+//     console.log("在 promise 裡", data);
+//     return doWork("寫功課", 3000);
+//   })
+//   .then((data) => {
+//     console.log("在 promise 裡", data);
+//   })
+//   .catch((err) => {
+//     // 用來接住 reject
+//     console.error("在 promise 發生錯誤:", err);
+//   });
