@@ -17,6 +17,7 @@ console.log(`開始工作 at ${dt.toISOString()}`);
 // 執行成功: 完成工作 吃早餐 at 2022-08-06T02:47:02.761Z
 // 執行成功: 完成工作 寫功課 at 2022-08-06T02:47:05.761Z
 doWork("刷牙", 3000, function (err, data) {
+  //只有在這裡，當這個 callback 被呼叫，才可以很確定這件事做完了
   if (err) {
     console.error("發生錯誤了", err);
   } else {
