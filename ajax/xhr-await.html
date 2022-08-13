@@ -36,7 +36,7 @@
       });
 
       var asyncBtn = document.getElementById("asyncBtn");
-      asyncBtn.addEventListener("click", function () {
+      asyncBtn.addEventListener("click", async function () {
         responseDom.innerText = "開始「非」同步請求";
         // TODO: 實作非同步請求
         var xhr = new XMLHttpRequest();
@@ -60,13 +60,12 @@
           xhr.send();
         });
 
-        xhrPromise
-          .then((data) => {
-            responseDom.innerHTML = `這是promise版本: ${data}`;
-          })
-          .catch((err) => {
-            alert(`這是promise版本: ${err}`);
-          });
+        try {
+          let data = await xhrPromise;
+          responseDom.innerHTML = `這是await版本: ${data}`;
+        } catch (err) {
+          alert(`這是await版本: ${err}`);
+        }
       });
 
       var count = document.getElementById("count");
