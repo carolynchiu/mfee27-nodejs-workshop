@@ -20,17 +20,18 @@
         responseDom.innerText = "開始同步請求";
         // TODO: 實作同步請求
         var xhr = new XMLHttpRequest();
+
         xhr.addEventListener("load", function () {
           if (xhr.status === 200) {
             responseDom.innerHTML = `非同步請求已回覆 ${xhr.responseText}`;
           } else {
             responseDom.innerHTML = `非同步請求失敗，狀態碼 ${xhr.status}`;
           }
-
-          xhr.onerror = function (event) {
-            responseDom.innerHTML = `XHR 非同步請求錯誤`;
-          };
         });
+
+        xhr.onerror = function (event) {
+          responseDom.innerHTML = `XHR 非同步請求錯誤`;
+        };
         xhr.open("GET", "http://54.71.133.152:3000", false);
         xhr.send();
       });
