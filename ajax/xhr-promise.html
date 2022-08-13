@@ -44,23 +44,24 @@
         let xhrPromise = new Promise((resolve, reject) => {
           xhr.addEventListener("load", function () {
             if (xhr.status === 200) {
-              responseDom.innerHTML = `非同步請求已回覆 ${xhr.responseText}`;
-              resolve(responseDom.innerHTML);
+              resolve(`非同步請求已回覆 ${xhr.responseText}`);
             } else {
-              responseDom.innerHTML = `非同步請求失敗，狀態碼 ${xhr.status}`;
-              reject(responseDom.innerHTML);
+              resolve(`非同步請求失敗，狀態碼 ${xhr.status}`);
             }
           });
+          xhr.onerror = function (event) {
+            reject(`XHR 非同步請求錯誤`);
+          };
+          xhr.open("GET", "http://54.71.133.152:3000", true);
+          xhr.send();
         });
         xhrPromise
-          .then((data) => console.log(data))
-          .catch((err) => console.error(err));
-
-        xhr.onerror = function (event) {
-          responseDom.innerHTML = `XHR 非同步請求錯誤`;
-        };
-        xhr.open("GET", "http://54.71.133.152:3000", true);
-        xhr.send();
+          .then((data) => {
+            responseDom.innerHTML = data;
+          })
+          .catch((err) => {
+            responseDom.innerHTML = err;
+          });
       });
 
       var count = document.getElementById("count");
