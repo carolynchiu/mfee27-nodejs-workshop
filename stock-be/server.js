@@ -47,6 +47,7 @@ app.use((req, res, next) => {
 // method: get, post, delete, put, patch, ...
 // GET /
 //路由中間件
+// (38:55) express 需要我們告訴它你有什麼網址需要處理的
 app.get("/", (req, res, next) => {
   console.log("這裡是首頁");
   res.send("hello Express");
