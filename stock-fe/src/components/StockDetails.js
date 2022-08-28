@@ -6,42 +6,73 @@ const StockDetails = () => {
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
 
+  //TODO: 增加 lastPage(總頁數) 與 page (目前在第幾頁) 的 state
+  const [lastPage, setLastPage] = useState(5);
+  const [page, setPage] = useState(1);
+
   const { stockId } = useParams();
   console.log("stockDetail-stockId", stockId);
-  // TODO: 去後端撈資料
-  // TODO: 1. axios.get -> 在哪個 useEffect 裡做？
+  // 去後端撈資料
+  // 1. axios.get -> 在哪個 useEffect 裡做？
   useEffect(() => {
     console.log("useEffect[]", data);
     let getStockDetail = async () => {
       let response = await axios.get(
-        `http://localhost:3002/api/1.0/stocks/${stockId}`
+        `http://localhost:3002/api/1.0/stocks/${stockId}?page=${page}`
       );
-      setData(response.data);
-      console.log("useEffect[] after set", data);
+      // 2. setData
+      setData(response.data.data);
+      //TODO:從後端取得資料後，要從 pagination 物件裡取得總頁數 (lastPage)
+      setLastPage(response.data.pagination.lastPage);
     };
     getStockDetail();
-  }, []);
-  // TODO: 2. setData
-  useEffect(() => {
-    console.log("useEffect[data]", data);
-  }, [data]);
+    //TODO:在 page 的 effect 去後端取得該頁資料
+  }, [page]);
+
+  //TODO:先開發頁碼，可以透過修改 lastPage 與 page 這兩個 state 的預設值來測試
+  // 製作頁碼按鈕
+  const getPages = () => {
+    let pages = [];
+    for (let i = 1; i <= lastPage; i++) {
+      pages.push(
+        <li
+          style={{
+            display: "inline-block",
+            margin: "2px",
+            backgroundColor: page === i ? "#00d1b2" : "",
+            borderColor: page === i ? "#00d1b2" : "#dbdbdb",
+            color: page === i ? "#fff" : "#363636",
+            borderWidth: "1px",
+            width: "28px",
+            height: "28px",
+            borderRadius: "3px",
+            textAlign: "center",
+          }}
+          key={i}
+          onClick={(e) => {
+            //TODO:頁碼點擊後，要 setPage 去改變 page state
+            setPage(i);
+          }}
+        >
+          {i}
+        </li>
+      );
+    }
+    return pages;
+  };
+
   return (
     <div>
       {error && <div>{error}</div>}
-      {/* TODO: 3. 在畫面上 render 資料, data.map */}
-      {/*     stock_id: '2330',
-    date: 2022-08-11T16:00:00.000Z,
-    open_price: '515.00',
-    high_price: '518.00',
-    low_price: '514.00',
-    close_price: '517.00',
-    delta_price: '3.00',
-    transactions: 21701,
-    volume: 21343450,
-    amount: '11016097043.00' */}
+      {/* 放一下頁碼 */}
+      <ul>{getPages()}</ul>
+      目前在第 {page} 頁{/* TODO: 3. 在畫面上 render 資料, data.map */}
       {data.map((v, i) => {
         return (
-          <div className="bg-white bg-gray-50 p-6 rounded-lg shadow m-6">
+          <div
+            key={v.date}
+            className="bg-white bg-gray-50 p-6 rounded-lg shadow m-6"
+          >
             <h2 className="text-2xl font-bold mb-2 text-gray-800">
               日期：{v.date}
             </h2>
