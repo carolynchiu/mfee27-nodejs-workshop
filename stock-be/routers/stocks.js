@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../utils/db");
+// 注意路徑
 
 // API
 // 列出所有股票代碼
