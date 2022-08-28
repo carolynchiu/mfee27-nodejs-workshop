@@ -7,7 +7,7 @@ const StockDetails = () => {
   const [data, setData] = useState([]);
 
   //TODO: 增加 lastPage(總頁數) 與 page (目前在第幾頁) 的 state
-  const [lastPage, setLastPage] = useState(5);
+  const [lastPage, setLastPage] = useState(1);
   const [page, setPage] = useState(1);
 
   const { stockId } = useParams();
@@ -15,7 +15,6 @@ const StockDetails = () => {
   // 去後端撈資料
   // 1. axios.get -> 在哪個 useEffect 裡做？
   useEffect(() => {
-    console.log("useEffect[]", data);
     let getStockDetail = async () => {
       let response = await axios.get(
         `http://localhost:3002/api/1.0/stocks/${stockId}?page=${page}`
@@ -31,41 +30,41 @@ const StockDetails = () => {
 
   //TODO:先開發頁碼，可以透過修改 lastPage 與 page 這兩個 state 的預設值來測試
   // 製作頁碼按鈕
-  const getPages = () => {
-    let pages = [];
-    for (let i = 1; i <= lastPage; i++) {
-      pages.push(
-        <li
-          style={{
-            display: "inline-block",
-            margin: "2px",
-            backgroundColor: page === i ? "#00d1b2" : "",
-            borderColor: page === i ? "#00d1b2" : "#dbdbdb",
-            color: page === i ? "#fff" : "#363636",
-            borderWidth: "1px",
-            width: "28px",
-            height: "28px",
-            borderRadius: "3px",
-            textAlign: "center",
-          }}
-          key={i}
-          onClick={(e) => {
-            //TODO:頁碼點擊後，要 setPage 去改變 page state
-            setPage(i);
-          }}
-        >
-          {i}
-        </li>
-      );
-    }
-    return pages;
-  };
+  let pages = [];
+  for (let i = 1; i <= lastPage; i++) {
+    pages.push(i);
+  }
 
   return (
     <div>
       {error && <div>{error}</div>}
       {/* 放一下頁碼 */}
-      <ul>{getPages()}</ul>
+      <ul>
+        {pages.map((v, i) => {
+          return (
+            <li
+              style={{
+                display: "inline-block",
+                margin: "2px",
+                backgroundColor: page === v ? "#00d1b2" : "",
+                borderColor: page === v ? "#00d1b2" : "#dbdbdb",
+                color: page === v ? "#fff" : "#363636",
+                borderWidth: "1px",
+                width: "28px",
+                height: "28px",
+                borderRadius: "3px",
+                textAlign: "center",
+              }}
+              key={v}
+              onClick={(e) => {
+                setPage(v);
+              }}
+            >
+              {v}
+            </li>
+          );
+        })}
+      </ul>
       目前在第 {page} 頁{/* TODO: 3. 在畫面上 render 資料, data.map */}
       {data.map((v, i) => {
         return (

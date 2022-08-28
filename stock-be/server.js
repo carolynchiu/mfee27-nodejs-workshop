@@ -118,7 +118,7 @@ app.get("/api/1.0/stocks/:stockId", async (req, res, next) => {
     "SELECT * FROM stock_prices WHERE stock_id = ? ORDER BY date LIMIT ? OFFSET ?",
     [stockId, perPage, offset]
   );
-
+  console.log(data);
   //  把取得的資料回覆給前端
   // res.json({ stockId });
   // res.json(data);
