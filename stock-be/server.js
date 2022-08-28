@@ -8,8 +8,10 @@ const app = express();
 // 至少在同一個檔案中，可以放到最上方統一管理
 // 目標是: 只需要改一個地方，全部的地方就生效
 // 降低漏改到的風險 -> 降低程式出錯的風險
-const port = process.env.SERVER_PORT;
+// 用 || 建立預設值
+const port = process.env.SERVER_PORT || 3002;
 
+// npm i cors
 const cors = require("cors");
 app.use(cors());
 
@@ -62,12 +64,28 @@ app.get("/test", (req, res, next) => {
 // 列出所有股票代碼
 // GET /stocks
 app.get("/api/1.0/stocks", async (req, res, next) => {
+  console.log("/api/1.0/stocks"); //有印表示有進來這個中間件
   // 寫法1:
   // let result = await pool.execute("SELECT * FROM stocks");
   // let data = result[0];
   // 寫法2:
   let [data] = await pool.execute("SELECT * FROM stocks");
   console.log(data);
+  res.json(data);
+});
+
+// 列出某個股票代碼的所有報價資料
+// GET /stocks/2330
+app.get("/api/1.0/stocks/:stockId", async (req, res, next) => {
+  const stockId = req.params.stockId;
+
+  // TODO: 去資料庫撈資料
+  let [data] = await pool.execute(
+    `SELECT * FROM stock_prices WHERE stock_id = ${stockId}`
+  );
+  console.log(data);
+  // TODO: 把取得的資料回覆給前端
+  // res.json({ stockId });
   res.json(data);
 });
 
