@@ -7,8 +7,10 @@ const Stock = () => {
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
 
+  // didMount
   useEffect(() => {
     console.log("useEffect[]", data);
+    // call API
     let getStock = async () => {
       let response = await axios.get(`${API_URL}/stocks`);
       setData(response.data);
@@ -17,9 +19,9 @@ const Stock = () => {
     getStock();
   }, []);
 
-  useEffect(() => {
-    console.log("useEffect[data]", data);
-  }, [data]);
+  // useEffect(() => {
+  //   console.log("useEffect[data]", data);
+  // }, [data]);
 
   return (
     <div>

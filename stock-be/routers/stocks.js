@@ -16,6 +16,7 @@ router.get("/", async (req, res, next) => {
   let [data] = await pool.execute("SELECT * FROM stocks");
   console.log(data);
   res.json(data);
+  //[ { id: '2330', name: '台積電' }, { id: '2603', name: '長榮' } ]
 });
 
 ////// 列出某個股票代碼的所有報價資料
