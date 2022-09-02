@@ -5,12 +5,13 @@ import { API_URL } from "../utils/config";
 
 const StockDetails = () => {
   const [error, setError] = useState(null);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]); // data 是用來存後端撈的資料
 
-  //TODO: 增加 lastPage(總頁數) 與 page (目前在第幾頁) 的 state
+  // --- 分頁 TODO: 增加 lastPage(總頁數) 與 page (目前在第幾頁) 的 state
   const [lastPage, setLastPage] = useState(1);
   const [page, setPage] = useState(1);
 
+  // 把網址上的 stockId 拿出來
   const { stockId } = useParams();
   console.log("stockDetail-stockId", stockId);
   // 去後端撈資料
@@ -20,16 +21,17 @@ const StockDetails = () => {
       let response = await axios.get(
         `${API_URL}/stocks/${stockId}?page=${page}`
       );
+      // console.log(response);
       // 2. setData
       setData(response.data.data);
-      //TODO:從後端取得資料後，要從 pagination 物件裡取得總頁數 (lastPage)
+      // --- 分頁 TODO: 從後端取得資料後，要從 pagination 物件裡取得總頁數 (lastPage)
       setLastPage(response.data.pagination.lastPage);
     };
     getStockDetail();
-    //TODO:在 page 的 effect 去後端取得該頁資料
+    // --- 分頁 TODO: 在 page 的 effect 去後端取得該頁資料
   }, [page]);
 
-  //TODO:先開發頁碼，可以透過修改 lastPage 與 page 這兩個 state 的預設值來測試
+  // --- 分頁 TODO: 先開發頁碼，可以透過修改 lastPage 與 page 這兩個 state 的預設值來測試
   // 製作頁碼按鈕
   let pages = [];
   for (let i = 1; i <= lastPage; i++) {
@@ -66,7 +68,7 @@ const StockDetails = () => {
           );
         })}
       </ul>
-      目前在第 {page} 頁{/* TODO: 3. 在畫面上 render 資料, data.map */}
+      目前在第 {page} 頁{/* 3. 在畫面上 render 資料, data.map */}
       {data.map((v, i) => {
         return (
           <div

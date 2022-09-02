@@ -9,8 +9,9 @@ let pool = mysql
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    //限制 pool 連線數的上限
+    // 限制 pool 連線數的上限
     connectionLimit: 10,
+    // 保持 date 是 string，不要轉成 js 的 date 物件 -> 看 stock-fe > StockDetail 元件
     dateStrings: true,
   })
   .promise();
