@@ -1,6 +1,8 @@
 //stock-be > utils > db.js
 //把資料庫連線相關的設定從 server.js 中抽取出來，易於管理，也便於共用
-require("dotenv").config();
+
+require("dotenv").config(); //維持模組的獨立性，所以也放這一行
+
 const mysql = require("mysql2");
 let pool = mysql
   .createPool({

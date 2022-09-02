@@ -32,7 +32,12 @@ app.use(cors());
 // 引用 server 需要的資料庫模組
 const pool = require("./utils/db");
 
-////// middleware (中間件)
+////// ========================== //////
+////// --- middleware (中間件) --- //////
+////// ========================== //////
+// 如果要讓 express 認得 json，要使用這個中間件(幫你解析 payload 是不是 json)
+app.use(express.json());
+
 // --- (1) 一般的 middleware
 app.use((req, res, next) => {
   // console.log("這是middleware A");
@@ -63,13 +68,29 @@ app.get("/test", (req, res, next) => {
   res.send("hello test");
 });
 
+/////// 看 router > stock.js
 let stockRouter = require("./routers/stocks");
 app.use("/api/1.0/stocks", stockRouter);
+// /api/1.0/stocks
+// /api/1.0/stocks/:stockId
+
+/////// 看 router > auth.js
+let authRouter = require("./routers/auth");
+app.use(authRouter);
 
 app.use((req, res, next) => {
   console.log("這是middleware c");
   next();
   // next() 一定要寫，讓 express 知道要跳去下一個中間件
+});
+
+// 在所有的路由中間件的下面
+// 既然前面所有的「網址」都比不到，表示前面沒有任何符合的網址 (旅程一直沒有被結束)
+// --> 404
+// 利用這個特殊的順序，把這裡當成 404
+app.use((req, res, next) => {
+  console.log("在所有路由中間件的下面 -> 404 了！");
+  res.status(404).send("Not Found!!");
 });
 
 ////// 啟動 server，並且開始 listen 一個 port
