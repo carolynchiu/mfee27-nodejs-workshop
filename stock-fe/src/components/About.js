@@ -1,9 +1,11 @@
 import axios from "axios";
 import { API_URL, IMAGE_URL } from "../utils/config";
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/auth";
 
 const About = () => {
-  const [member, setMember] = useState(null);
+  // const [member, setMember] = useState(null);
+  const { member, setMember } = useAuth();
 
   useEffect(() => {
     let getMember = async () => {

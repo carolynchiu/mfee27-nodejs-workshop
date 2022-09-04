@@ -1,31 +1,37 @@
 import { useState } from "react";
 import axios from "axios";
 import { API_URL } from "../utils/config";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/auth";
 
 const Login = () => {
+  // 把 member, setMember 從 auth context 裡頭拿出來
+  const { member, setMember } = useAuth();
+
   const [loginMember, setLoginMember] = useState({
     email: "carolyn55@gmail.com",
     password: "testtest",
   });
+  const [isLogin, setIsLogin] = useState(false);
 
   function handleChange(e) {
-    const newLoginMember = { ...loginMember, [e.target.name]: e.target.value };
-    setLoginMember(newLoginMember);
+    setLoginMember({ ...loginMember, [e.target.name]: e.target.value });
   }
 
   async function handleSubmit(e) {
-    // 阻止表單預設行為
     e.preventDefault();
-    try {
-      let response = await axios.post(`${API_URL}/auth/login`, loginMember, {
-        // 為了可以跨源存取 cookie
-        withCredentials: true,
-      });
-      // console.log("POST res", response);
-      console.log(response.data);
-    } catch (e) {
-      console.error("register Error", e);
-    }
+    let response = await axios.post(`${API_URL}/auth/login`, loginMember, {
+      // 為了可以跨源存取 cookie
+      withCredentials: true,
+    });
+    console.log(response.data);
+    // 告訴 auth context 會員有資料
+    setMember(response.data);
+    setIsLogin(true);
+  }
+
+  if (isLogin) {
+    return <Navigate to="/about" />;
   }
 
   return (

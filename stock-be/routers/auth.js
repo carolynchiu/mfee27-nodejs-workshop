@@ -165,4 +165,10 @@ router.post("/api/1.0/auth/login", async (req, res, next) => {
   // TODO: 回覆前端登入成功
   res.json(saveMember);
 });
+
+router.get("/api/1.0/auth/logout", (req, res, next) => {
+  req.session.member = null;
+  res.json({ message: "登出成功" });
+});
+
 module.exports = router;
