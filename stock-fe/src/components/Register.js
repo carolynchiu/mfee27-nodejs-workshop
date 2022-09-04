@@ -8,7 +8,7 @@ const Register = () => {
     name: "Carolyn Chiu",
     password: "testtest",
     confirmPassword: "testtest",
-    // photo: "",
+    photo: "",
   });
 
   ////// 控制(?)表單
@@ -31,19 +31,19 @@ const Register = () => {
     try {
       // --- 方法(1): 沒有圖片上傳、單純 post 一個 json 物件
       //           //http://localhost:3002/api/1.0
-      let response = await axios.post(`${API_URL}/auth/register`, member);
-      console.log("POST res", response);
-      console.log(response.data);
+      // let response = await axios.post(`${API_URL}/auth/register`, member);
+      // console.log("POST res", response);
+      // console.log(response.data);
 
       // --- 方法(2): 要上傳圖片 FormData
-      // let formData = new FormData();
-      // formData.append("email", member.email);
-      // formData.append("name", member.name);
-      // formData.append("password", member.password);
-      // formData.append("confirmPassword", member.confirmPassword);
-      // formData.append("photo", member.photo);
-      // let response = await axios.post(`${API_URL}/auth/register`, formData);
-      // console.log(response.data);
+      let formData = new FormData();
+      formData.append("email", member.email);
+      formData.append("name", member.name);
+      formData.append("password", member.password);
+      formData.append("confirmPassword", member.confirmPassword);
+      formData.append("photo", member.photo);
+      let response = await axios.post(`${API_URL}/auth/register`, formData);
+      console.log(response.data);
     } catch (e) {
       console.error("register Error", e);
     }
