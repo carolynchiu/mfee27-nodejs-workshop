@@ -17,8 +17,11 @@ const Login = () => {
     // 阻止表單預設行為
     e.preventDefault();
     try {
-      let response = await axios.post(`${API_URL}/auth/login`, loginMember);
-      console.log("POST res", response);
+      let response = await axios.post(`${API_URL}/auth/login`, loginMember, {
+        // 為了可以跨源存取 cookie
+        withCredentials: true,
+      });
+      // console.log("POST res", response);
       console.log(response.data);
     } catch (e) {
       console.error("register Error", e);

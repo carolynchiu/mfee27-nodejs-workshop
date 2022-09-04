@@ -12,7 +12,26 @@ const path = require("path");
 // 用 || 建立預設值
 const port = process.env.SERVER_PORT || 3002;
 
-// 啟用 session
+////// npm i cors
+// --- (1) ---
+// 使用這個第三方提供的 cors 中間件
+// 來允許跨源存取
+// 預設都是全部開放
+const cors = require("cors");
+// app.use(cors());
+// --- (2) ---
+// 下面為客製化設定
+// 使用情境: 當前後端網址不同時，只想允許自己的前端來跨源存取
+//          就可以利用 origin 這個設定來限制，不然預設是 '*' (全部)
+const corsOptions = {
+  // 如果要讓 cookie 可以跨網域存取，這邊要設定 credentials
+  // 且 origin 也要設定
+  credentials: true,
+  origin: ["http://localhost:3000"],
+};
+app.use(cors(corsOptions));
+
+////// 啟用 session
 const expressSession = require("express-session");
 // 把 session 存在硬碟中
 var FileStore = require("session-file-store")(expressSession);
@@ -29,22 +48,6 @@ app.use(
     saveUninitialized: false,
   })
 );
-
-////// npm i cors
-// --- (1) ---
-// 使用這個第三方提供的 cors 中間件
-// 來允許跨源存取
-// 預設都是全部開放
-const cors = require("cors");
-app.use(cors());
-// --- (2) ---
-// 下面為客製化設定
-// 使用情境: 當前後端網址不同時，只想允許自己的前端來跨源存取
-//          就可以利用 origin 這個設定來限制，不然預設是 '*' (全部)
-// const corsOptions = {
-//   origin: ['http://localhost:3000'],
-// };
-// app.use(cors(corsOptions));
 
 ////// 使用資料庫
 // 查看 -> stock-be > utils > db.js
@@ -104,6 +107,10 @@ app.use("/api/1.0/stocks", stockRouter);
 /////// 看 router > auth.js
 let authRouter = require("./routers/auth");
 app.use(authRouter);
+
+/////// 看 router > member.js
+let memberRouter = require("./routers/member");
+app.use("/api/1.0/member", memberRouter);
 
 app.use((req, res, next) => {
   console.log("這是middleware c");
