@@ -2,20 +2,24 @@ import axios from "axios";
 import { API_URL, IMAGE_URL } from "../utils/config";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/auth";
+import { Navigate } from "react-router-dom";
 
 const About = () => {
-  // const [member, setMember] = useState(null);
   const { member, setMember } = useAuth();
 
-  useEffect(() => {
-    let getMember = async () => {
-      let response = await axios.get(`${API_URL}/member`, {
-        withCredentials: true,
-      });
-      setMember(response.data);
-    };
-    getMember();
-  }, []);
+  if (!member) {
+    return <Navigate to="/login" />;
+  }
+  // const [member, setMember] = useState(null);
+  // useEffect(() => {
+  //   let getMember = async () => {
+  //     let response = await axios.get(`${API_URL}/member`, {
+  //       withCredentials: true,
+  //     });
+  //     setMember(response.data);
+  //   };
+  //   getMember();
+  // }, []);
 
   return (
     <div className="m-7">
